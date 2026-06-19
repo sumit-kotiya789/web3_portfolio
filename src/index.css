@@ -1,0 +1,354 @@
+@import '@rainbow-me/rainbowkit/styles.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   PREMIUM COLOR SYSTEM — single source of truth
+   ============================================================ */
+:root {
+  /* ----------------------------------------------------------------
+     PREMIUM DARK · single ice-cyan/teal accent (restrained, expensive)
+     Legacy token names kept so every component re-skins centrally.
+     ---------------------------------------------------------------- */
+
+  /* Background system — deep neutral charcoal, no purple tint */
+  --bg-void: #08080c;
+  --bg-deep: #0b0b11;
+  --bg-card: #121219;
+  --bg-elevated: #1a1a23;
+
+  /* Primary accent (was violet) → teal, so the brand is mono-accent */
+  --violet-core: #2dd4bf;
+  --violet-bright: #5eead4;
+  --violet-glow: #99f6e4;
+
+  /* Teal accent */
+  --cyan-core: #2dd4bf;
+  --cyan-soft: #5eead4;
+  --cyan-glow: rgba(45, 212, 191, 0.15);
+
+  /* Highlight (was magenta) → teal — one accent only */
+  --magenta-pop: #2dd4bf;
+  --magenta-soft: #5eead4;
+
+  /* Platinum (was gold) — restrained metallic neutral for premium accents */
+  --gold-premium: #d6d9e3;
+  --gold-soft: #eef0f6;
+
+  /* Success (was emerald) → teal family */
+  --emerald-live: #2dd4bf;
+  --emerald-soft: #5eead4;
+
+  /* Glass & borders — neutral white, no colour tint */
+  --glass-white: rgba(255, 255, 255, 0.04);
+  --glass-violet: rgba(255, 255, 255, 0.035);
+  --glass-cyan: rgba(45, 212, 191, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-violet: rgba(255, 255, 255, 0.10);
+  --border-cyan: rgba(45, 212, 191, 0.22);
+
+  /* Text — neutral greys */
+  --text-primary: #ecedf2;
+  --text-secondary: #9b9ca8;
+  --text-muted: #5c5d6a;
+  --text-cyan: #5eead4;
+  --text-violet: #b9bac6;
+
+  /* Gradients — duotone teal / platinum, no rainbow */
+  --grad-hero: linear-gradient(135deg, #5eead4 0%, #2dd4bf 55%, #2aa9c0 100%);
+  --grad-card: linear-gradient(145deg, #121219 0%, #1a1a23 100%);
+  --grad-violet: linear-gradient(135deg, #2dd4bf, #5eead4);
+  --grad-fire: linear-gradient(135deg, #d6d9e3, #2dd4bf);
+  --grad-ocean: linear-gradient(135deg, #2dd4bf, #5eead4);
+  --grad-premium: linear-gradient(135deg, #eef0f6, #5eead4, #2dd4bf);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', 'Sora', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+@media (max-width: 900px) {
+  body {
+    cursor: auto;
+  }
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Sora', sans-serif;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::selection {
+  background: var(--violet-core);
+  color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--violet-core), var(--cyan-core));
+  border-radius: 10px;
+}
+
+/* ============================================================
+   REUSABLE UTILITY CLASSES
+   ============================================================ */
+.text-grad-hero {
+  background: var(--grad-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.text-grad-premium {
+  background: var(--grad-premium);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.text-grad-ocean {
+  background: var(--grad-ocean);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.text-grad-violet {
+  background: var(--grad-violet);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.text-grad-fire {
+  background: var(--grad-fire);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Glass card base */
+.glass {
+  background: var(--glass-violet);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+}
+.glass-cyan {
+  background: var(--glass-cyan);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-cyan);
+  border-radius: 20px;
+}
+
+/* Buttons */
+.btn-magenta {
+  background: var(--magenta-pop);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.8rem;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(255, 45, 155, 0);
+}
+.btn-magenta:hover {
+  background: var(--magenta-soft);
+  box-shadow: 0 0 30px rgba(255, 45, 155, 0.5);
+  transform: translateY(-2px);
+}
+.btn-fire {
+  background: var(--grad-fire);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 1.8rem;
+  font-weight: 600;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+.btn-fire:hover {
+  box-shadow: 0 0 35px rgba(255, 45, 155, 0.45);
+  transform: translateY(-2px);
+}
+.btn-ghost {
+  background: var(--glass-violet);
+  color: var(--text-cyan);
+  border: 1px solid var(--border-violet);
+  border-radius: 999px;
+  padding: 0.85rem 1.8rem;
+  font-weight: 600;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+}
+.btn-ghost:hover {
+  border-color: var(--cyan-core);
+  color: var(--cyan-soft);
+  box-shadow: 0 0 25px var(--cyan-glow);
+  transform: translateY(-2px);
+}
+
+/* Section divider */
+.divider-grad {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--violet-core), var(--cyan-core), transparent);
+  opacity: 0.5;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes meshShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Translate-only drifts — animating scale on a blurred layer forces the
+   browser to re-rasterize the blur every frame, which is very expensive.
+   Pure translate lets the GPU cache the blurred texture and just move it. */
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(80px, -60px, 0); }
+  66% { transform: translate3d(-50px, 40px, 0); }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(-70px, 50px, 0); }
+  66% { transform: translate3d(60px, -40px, 0); }
+}
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(40px, 70px, 0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0); }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glitchTop {
+  0%, 90%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  92% { clip-path: inset(0 0 70% 0); transform: translate(-3px, -2px); }
+  94% { clip-path: inset(40% 0 30% 0); transform: translate(3px, 2px); }
+  96% { clip-path: inset(0 0 60% 0); transform: translate(-2px, 1px); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--emerald-live);
+  animation: pulseDot 2s infinite;
+  display: inline-block;
+}
+
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Hex shape */
+.hex {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Glow text utility */
+.glow-cyan {
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.6);
+}
+.glow-violet {
+  text-shadow: 0 0 18px rgba(108, 47, 255, 0.6);
+}
+
+/* RainbowKit overrides to match palette */
+[data-rk] {
+  --rk-colors-accentColor: var(--magenta-pop);
+  --rk-colors-modalBackground: var(--bg-card);
+}
+
+/* Hide default cursor on interactive elements (custom cursor handles it) */
+@media (min-width: 901px) {
+  a, button, input, textarea, [role='button'] {
+    cursor: none;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY / PERFORMANCE — honor reduced-motion
+   Cuts all looping decorative animations for users who ask for
+   less motion (also a big battery/CPU win on low-end devices).
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
