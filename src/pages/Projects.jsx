@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, ArrowUpRight, Hexagon, Play, X, Loader2 } from 'lucide-react'
 import { Section, Heading, Counter } from '../components/ui'
 import NodeGraph from '../components/NodeGraph'
+import DeployedContracts from '../components/DeployedContracts'
 
 /* Live bridge demos — the real, relayer-backed bridges I built */
 const TaaqoWusdtBridge = lazy(() => import('../bridges/TaaqoWusdtBridge'))
@@ -94,7 +95,7 @@ const projects = [
     cat: 'Infrastructure',
     size: 'large',
     badge: { text: 'FLAGSHIP', color: 'var(--gold-premium)' },
-    chainId: '5577',
+    chainId: '5566',
     accent: 'var(--violet-core)',
     desc: 'A fully custom EVM-compatible Layer-2 built on Go-Ethereum, running three independent validator nodes with its own RPC layer and block explorer.',
     stats: ['3 RPCs', '3 Nodes', 'Go-Ethereum', 'EVM Compatible'],
@@ -434,6 +435,17 @@ export default function Projects() {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {/* Deployed & verified contracts */}
+      <div style={{ marginTop: 90 }}>
+        <Heading
+          eyebrow="On BscScan"
+          title="DEPLOYED CONTRACTS"
+          gradient="text-grad-ocean"
+          sub="Live, verified contracts on BNB Smart Chain. Tap a card to see exactly what each one does — with an on-chain flow diagram."
+        />
+        <DeployedContracts />
+      </div>
 
       <style>{`
         .proj-card {

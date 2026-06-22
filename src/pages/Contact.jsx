@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, Send, MapPin, CheckCircle2 } from 'lucide-react'
+import { Github, Linkedin, Mail, Send, MapPin, CheckCircle2, FileDown, Loader2, AlertCircle } from 'lucide-react'
 import { Section, Heading, Reveal } from '../components/ui'
+import { PROFILE } from '../lib/profile'
 
 const availableFor = [
   { label: 'DeFi Protocols', color: 'var(--violet-core)' },
@@ -11,22 +12,55 @@ const availableFor = [
 ]
 
 const socials = [
-  { icon: Github, label: 'GitHub', url: 'https://github.com', cls: 'social-violet' },
-  { icon: Linkedin, label: 'LinkedIn', url: 'https://linkedin.com', cls: 'social-cyan' },
-  { icon: Mail, label: 'Email', url: 'mailto:hello@sumitkotiya.dev', cls: 'social-magenta' },
+  { icon: Github, label: 'GitHub', url: PROFILE.socials.github, cls: 'social-violet' },
+  { icon: Linkedin, label: 'LinkedIn', url: PROFILE.socials.linkedin, cls: 'social-cyan' },
+  { icon: Mail, label: 'Email', url: `mailto:${PROFILE.email}`, cls: 'social-magenta' },
 ]
 
 export default function Contact() {
-  const [sent, setSent] = useState(false)
+  // 'idle' | 'sending' | 'sent' | 'error'
+  const [status, setStatus] = useState('idle')
   const [form, setForm] = useState({ name: '', email: '', building: '', message: '' })
 
   const handle = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
-  const submit = (e) => {
+
+  const submit = async (e) => {
     e.preventDefault()
-    setSent(true)
-    setTimeout(() => setSent(false), 4000)
-    setForm({ name: '', email: '', building: '', message: '' })
+
+    // No Formspree endpoint configured yet → fall back to the visitor's mail client.
+    if (!PROFILE.formspreeEndpoint) {
+      const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`)
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nEmail: ${form.email}\nBuilding: ${form.building}\n\n${form.message}`,
+      )
+      window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`
+      return
+    }
+
+    setStatus('sending')
+    try {
+      const res = await fetch(PROFILE.formspreeEndpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          building: form.building,
+          message: form.message,
+          _subject: `Portfolio enquiry from ${form.name}`,
+        }),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setStatus('sent')
+      setForm({ name: '', email: '', building: '', message: '' })
+      setTimeout(() => setStatus('idle'), 4500)
+    } catch {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 4500)
+    }
   }
+
+  const sending = status === 'sending'
 
   return (
     <Section style={{ paddingTop: 130 }}>
@@ -69,9 +103,22 @@ export default function Contact() {
                 style={{ resize: 'vertical' }}
               />
             </div>
-            <button type="submit" className="btn-fire cursor-grow" style={{ width: '100%', justifyContent: 'center', fontSize: 16 }}>
-              {sent ? <><CheckCircle2 size={18} /> Message Sent!</> : <><Send size={18} /> Send Message</>}
+            <button
+              type="submit"
+              disabled={sending}
+              className="btn-fire cursor-grow"
+              style={{ width: '100%', justifyContent: 'center', fontSize: 16, opacity: sending ? 0.7 : 1 }}
+            >
+              {status === 'sending' && <><Loader2 size={18} className="animate-spin" /> Sending…</>}
+              {status === 'sent' && <><CheckCircle2 size={18} /> Message Sent!</>}
+              {status === 'error' && <><AlertCircle size={18} /> Failed — try again</>}
+              {status === 'idle' && <><Send size={18} /> Send Message</>}
             </button>
+            {status === 'error' && (
+              <p style={{ color: 'var(--magenta-soft)', fontSize: 12.5, marginTop: 10, textAlign: 'center' }}>
+                Couldn't reach the form service. You can email me directly at {PROFILE.email}.
+              </p>
+            )}
           </form>
         </Reveal>
 
@@ -102,13 +149,23 @@ export default function Contact() {
 
             <div className="glass" style={{ padding: 26 }}>
               <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--text-cyan)', marginBottom: 16 }}>SOCIALS</h4>
-              <div style={{ display: 'flex', gap: 14 }}>
+              <div style={{ display: 'flex', gap: 14, marginBottom: 18 }}>
                 {socials.map((s) => (
                   <a key={s.label} href={s.url} target="_blank" rel="noreferrer" className={`social-ico ${s.cls} cursor-grow`}>
                     <s.icon size={20} />
                   </a>
                 ))}
               </div>
+              <a
+                href={PROFILE.resumeUrl}
+                download
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost cursor-grow"
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                <FileDown size={18} /> Download Résumé
+              </a>
             </div>
 
             <div className="glass" style={{ padding: 26, border: '1px solid rgba(45,212,191,0.35)' }}>

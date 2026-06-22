@@ -62,6 +62,82 @@
   --grad-fire: linear-gradient(135deg, #d6d9e3, #2dd4bf);
   --grad-ocean: linear-gradient(135deg, #2dd4bf, #5eead4);
   --grad-premium: linear-gradient(135deg, #eef0f6, #5eead4, #2dd4bf);
+
+  /* Navbar glass (themed so the toggle re-skins it) */
+  --nav-bg-top: rgba(3, 1, 10, 0.45);
+  --nav-bg-scrolled: rgba(3, 1, 10, 0.85);
+
+  /* Page background layers (themed — read by Background.jsx) */
+  --bg-mesh: linear-gradient(120deg, #08080c 0%, #0b0b11 30%, #0d0d14 55%, #0a0a10 80%, #08080c 100%);
+  --bg-vignette: radial-gradient(circle at 50% 40%, transparent 40%, rgba(8, 8, 12, 0.7) 100%);
+  --orb-1: rgba(45, 212, 191, 0.38);
+  --orb-2: rgba(45, 212, 191, 0.20);
+  --orb-3: rgba(255, 255, 255, 0.05);
+  --particle: 45, 212, 191;
+  --glass-shadow: none;
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   LIGHT THEME — variable overrides only.
+   Intentionally-dark elements (terminal, code blocks, command
+   palette) keep their own dark backgrounds by design.
+   ============================================================ */
+[data-theme='light'] {
+  --bg-void: #f4f5f8;
+  --bg-deep: #eceef3;
+  --bg-card: #ffffff;
+  --bg-elevated: #f7f8fb;
+
+  --violet-core: #0d9488;
+  --violet-bright: #0f766e;
+  --violet-glow: #0d9488;
+
+  --cyan-core: #0d9488;
+  --cyan-soft: #0f766e;
+  --cyan-glow: rgba(13, 148, 136, 0.18);
+
+  --magenta-pop: #0d9488;
+  --magenta-soft: #0f766e;
+
+  --gold-premium: #334155;
+  --gold-soft: #475569;
+
+  --emerald-live: #0d9488;
+  --emerald-soft: #0f766e;
+
+  --glass-white: rgba(255, 255, 255, 0.62);
+  --glass-violet: rgba(255, 255, 255, 0.72);
+  --glass-cyan: rgba(13, 148, 136, 0.10);
+  --border-subtle: rgba(15, 23, 42, 0.10);
+  --border-violet: rgba(15, 23, 42, 0.14);
+  --border-cyan: rgba(13, 148, 136, 0.30);
+
+  --text-primary: #0b0b11;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-cyan: #0d9488;
+  --text-violet: #475569;
+
+  --grad-hero: linear-gradient(135deg, #0d9488 0%, #0f766e 60%, #115e59 100%);
+  --grad-violet: linear-gradient(135deg, #0d9488, #14b8a6);
+  --grad-fire: linear-gradient(135deg, #0f766e, #0d9488);
+  --grad-ocean: linear-gradient(135deg, #0d9488, #14b8a6);
+  --grad-premium: linear-gradient(135deg, #0f172a, #0d9488);
+
+  --nav-bg-top: rgba(255, 255, 255, 0.60);
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.88);
+
+  --bg-mesh: linear-gradient(120deg, #eef2f6 0%, #e7eef0 28%, #e9f4f1 55%, #edf1f5 80%, #eef2f6 100%);
+  --bg-vignette: radial-gradient(circle at 50% 30%, transparent 55%, rgba(148, 163, 184, 0.22) 100%);
+  --orb-1: rgba(13, 148, 136, 0.20);
+  --orb-2: rgba(13, 148, 136, 0.13);
+  --orb-3: rgba(13, 148, 136, 0.06);
+  --particle: 13, 148, 136;
+  --glass-shadow: 0 10px 34px rgba(15, 23, 42, 0.08);
+
+  color-scheme: light;
 }
 
 /* ============================================================
@@ -164,6 +240,7 @@ a {
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
+  box-shadow: var(--glass-shadow);
 }
 .glass-cyan {
   background: var(--glass-cyan);
@@ -171,6 +248,7 @@ a {
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-cyan);
   border-radius: 20px;
+  box-shadow: var(--glass-shadow);
 }
 
 /* Buttons */
@@ -230,6 +308,26 @@ a {
   color: var(--cyan-soft);
   box-shadow: 0 0 25px var(--cyan-glow);
   transform: translateY(-2px);
+}
+
+/* Shared glass input (used by wallet tools, contract reader, etc.) */
+.glass-input {
+  background: var(--glass-violet);
+  border: 1px solid var(--border-cyan);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.glass-input:focus {
+  border-color: var(--cyan-core);
+  box-shadow: 0 0 18px var(--cyan-glow);
+}
+.glass-input::placeholder {
+  color: var(--text-muted);
 }
 
 /* Section divider */

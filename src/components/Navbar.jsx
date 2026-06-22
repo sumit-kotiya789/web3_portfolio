@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import WalletPill from './WalletPill'
+import ThemeToggle from './ThemeToggle'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -10,6 +11,7 @@ const links = [
   { to: '/projects', label: 'Projects' },
   { to: '/skills', label: 'Skills' },
   { to: '/wallet', label: 'Wallet' },
+  { to: '/lab', label: 'Lab' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -68,7 +70,7 @@ export default function Navbar() {
           left: 0,
           right: 0,
           zIndex: 9000,
-          background: scrolled ? 'rgba(3,1,10,0.85)' : 'rgba(3,1,10,0.45)',
+          background: scrolled ? 'var(--nav-bg-scrolled)' : 'var(--nav-bg-top)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           borderBottom: scrolled ? '1px solid var(--border-subtle)' : '1px solid transparent',
@@ -109,6 +111,7 @@ export default function Navbar() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <ThemeToggle />
             <div className="nav-wallet-desktop">
               <WalletPill />
             </div>

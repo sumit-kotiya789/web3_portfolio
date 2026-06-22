@@ -1,14 +1,14 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { mainnet, bsc, polygon } from 'wagmi/chains'
-import { defineChain } from 'viem'
+import { defineChain, http } from 'viem'
 
 // Custom Taaqo L2 chain definition
 export const taaqo = defineChain({
-  id: 5577,
+  id: 5566,
   name: 'Taaqo L2',
   nativeCurrency: { name: 'Taaqo', symbol: 'TAAQO', decimals: 18 },
   rpcUrls: {
-    default: { http: ['https://rpc.taaqo.com'] },
+    default: { http: ['https://rpc.taaqo.com', 'https://rpc2.taaqo.com', 'https://rpc3.taaqo.com'] },
   },
   blockExplorers: {
     default: { name: 'TaaqoScan', url: 'https://taaqoscan.com' },
@@ -24,6 +24,14 @@ export const wagmiConfig = getDefaultConfig({
   appName: 'Sumit Kotiya — Web3 Portfolio',
   projectId: WALLETCONNECT_PROJECT_ID,
   chains: [mainnet, bsc, polygon, taaqo],
+  // Explicit, CORS-friendly public RPCs — the default mainnet endpoint is
+  // rate-limited/flaky, so pin reliable ones (publicnode).
+  transports: {
+    [mainnet.id]: http('https://ethereum-rpc.publicnode.com'),
+    [bsc.id]: http('https://bsc-rpc.publicnode.com'),
+    [polygon.id]: http('https://polygon-bor-rpc.publicnode.com'),
+    [taaqo.id]: http('https://rpc.taaqo.com'),
+  },
   ssr: false,
 })
 

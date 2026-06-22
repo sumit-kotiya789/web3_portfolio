@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { Github, Linkedin, Mail, FileDown } from 'lucide-react'
+import { PROFILE } from '../lib/profile'
 
 const chains = ['Ethereum', 'BSC', 'Polygon', 'Taaqo', 'Tron']
 
@@ -44,7 +45,7 @@ export default function Footer() {
           <h4 style={{ color: 'var(--text-cyan)', fontSize: 13, letterSpacing: 2, marginBottom: 14 }}>
             NAVIGATE
           </h4>
-          {['Home:/', 'About:/about', 'Projects:/projects', 'Skills:/skills', 'Wallet:/wallet', 'Contact:/contact'].map(
+          {['Home:/', 'About:/about', 'Projects:/projects', 'Skills:/skills', 'Wallet:/wallet', 'Lab:/lab', 'Contact:/contact'].map(
             (l) => {
               const [label, to] = l.split(':')
               return (
@@ -72,17 +73,33 @@ export default function Footer() {
           <h4 style={{ color: 'var(--text-cyan)', fontSize: 13, letterSpacing: 2, marginBottom: 14 }}>
             CONNECT
           </h4>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="social-ico social-violet">
+          <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+            <a href={PROFILE.socials.github} target="_blank" rel="noreferrer" className="social-ico social-violet">
               <Github size={18} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="social-ico social-cyan">
+            <a href={PROFILE.socials.linkedin} target="_blank" rel="noreferrer" className="social-ico social-cyan">
               <Linkedin size={18} />
             </a>
-            <a href="mailto:hello@sumitkotiya.dev" className="social-ico social-magenta">
+            <a href={`mailto:${PROFILE.email}`} className="social-ico social-magenta">
               <Mail size={18} />
             </a>
           </div>
+          <a
+            href={PROFILE.resumeUrl}
+            download
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              color: 'var(--cyan-soft)',
+              fontSize: 14,
+              marginBottom: 20,
+            }}
+          >
+            <FileDown size={16} /> Download résumé
+          </a>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--emerald-live)', fontSize: 13 }}>
             <span className="live-dot" /> Open to opportunities
           </div>

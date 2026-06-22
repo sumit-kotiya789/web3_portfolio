@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Toaster } from 'react-hot-toast'
 
 import LoadingScreen from './components/LoadingScreen'
 import CustomCursor from './components/CustomCursor'
@@ -9,12 +10,14 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import KonamiMatrix from './components/KonamiMatrix'
 import ScrollToTop from './components/ScrollToTop'
+import CommandPalette from './components/CommandPalette'
 
 import Home from './pages/Home'
 import About from './pages/About'
 import Projects from './pages/Projects'
 import Skills from './pages/Skills'
 import Wallet from './pages/Wallet'
+import Lab from './pages/Lab'
 import Contact from './pages/Contact'
 
 const pageVariants = {
@@ -52,12 +55,26 @@ export default function App() {
       <Background />
       <KonamiMatrix />
       <ScrollToTop />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            background: '#121219',
+            color: '#ecedf2',
+            border: '1px solid rgba(45,212,191,0.22)',
+            fontFamily: 'Space Grotesk, sans-serif',
+            fontSize: 14,
+          },
+          success: { iconTheme: { primary: '#2dd4bf', secondary: '#08080c' } },
+        }}
+      />
 
       <AnimatePresence>{loading && <LoadingScreen key="loader" />}</AnimatePresence>
 
       {!loading && (
         <>
           <Navbar />
+          <CommandPalette />
           <main style={{ position: 'relative', zIndex: 1 }}>
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
@@ -66,6 +83,7 @@ export default function App() {
                 <Route path="/projects" element={<PageWrap><Projects /></PageWrap>} />
                 <Route path="/skills" element={<PageWrap><Skills /></PageWrap>} />
                 <Route path="/wallet" element={<PageWrap><Wallet /></PageWrap>} />
+                <Route path="/lab" element={<PageWrap><Lab /></PageWrap>} />
                 <Route path="/contact" element={<PageWrap><Contact /></PageWrap>} />
               </Routes>
             </AnimatePresence>

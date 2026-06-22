@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Wallet, ChevronDown, Cpu, Layers, GitBranch, Server } from 'lucide-react'
 import Typewriter from '../components/Typewriter'
 import NodeGraph from '../components/NodeGraph'
+import TaaqoProof from '../components/TaaqoProof'
 import { Counter, Section, Reveal } from '../components/ui'
 
 const stats = [
@@ -214,7 +215,7 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.15}>
             <p style={{ color: 'var(--text-secondary)', fontSize: 17, lineHeight: 1.8 }}>
-              From a fully custom EVM-compatible Layer 2 (Taaqo, chain ID 5577) running three independent
+              From a fully custom EVM-compatible Layer 2 (Taaqo, chain ID 5566) running three independent
               validators, to live cross-chain bridges and a multi-tier DeFi staking protocol — I build the
               rails that the decentralized economy runs on. Every contract audited in spirit, every node
               battle-tested in production.
@@ -228,7 +229,7 @@ export default function Home() {
               </div>
               <div>
                 <div style={{ fontSize: 30, fontWeight: 800, color: 'var(--gold-premium)', fontFamily: 'Sora' }}>
-                  <Counter to={5577} duration={2.2} />
+                  <Counter to={5566} duration={2.2} />
                 </div>
                 <div style={{ color: 'var(--text-muted)', fontSize: 13 }}>Taaqo chain ID</div>
               </div>
@@ -236,6 +237,9 @@ export default function Home() {
           </Reveal>
         </div>
       </Section>
+
+      {/* Live, verifiable proof from my own chain */}
+      <TaaqoProof />
 
       <style>{`
         .stat-card { transition: transform .3s, box-shadow .3s, border-color .3s; }

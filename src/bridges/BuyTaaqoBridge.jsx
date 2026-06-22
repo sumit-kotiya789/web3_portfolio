@@ -1,4 +1,3 @@
-// Buy-TAAQO bridge: convert USDT on BNB Chain to native TAAQO.
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowDown, Wallet, ExternalLink, Loader2, Check, CheckCircle2, Info, X } from "lucide-react";
 import { toast, Toaster } from "react-hot-toast";

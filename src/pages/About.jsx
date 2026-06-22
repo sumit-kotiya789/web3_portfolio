@@ -28,7 +28,7 @@ const stack = [
 
 const timeline = [
   { year: '2025', title: 'Zanthium Technosoft', desc: 'Blockchain Developer — building production L2 & DeFi systems.', badge: 'Current', badgeColor: 'var(--magenta-pop)' },
-  { year: '2024', title: 'Taaqo L2 Launch', desc: 'Architected & launched custom EVM L2 (chain ID 5577) with 3 validators.', badge: 'Shipped', badgeColor: 'var(--cyan-core)' },
+  { year: '2024', title: 'Taaqo L2 Launch', desc: 'Architected & launched custom EVM L2 (chain ID 5566) with 3 validators.', badge: 'Shipped', badgeColor: 'var(--cyan-core)' },
   { year: '2024', title: 'GlobalStaken Live', desc: '6-tier staking protocol with Uniswap v3 LP & 10-level referral engine.', badge: 'Live', badgeColor: 'var(--emerald-live)' },
   { year: '2023–25', title: 'Diploma — CSE', desc: 'Computer Science & Engineering. Deep systems & cryptography focus.', badge: 'Edu', badgeColor: 'var(--gold-premium)' },
   { year: '2019–22', title: 'BSc', desc: 'Bachelor of Science — foundation in mathematics & logic.', badge: 'Edu', badgeColor: 'var(--violet-glow)' },

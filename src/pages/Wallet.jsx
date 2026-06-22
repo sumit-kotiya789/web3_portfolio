@@ -11,9 +11,11 @@ import {
 } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { Wallet as WalletIcon, Copy, Check, Plus, PenLine, ShieldCheck } from 'lucide-react'
+import { recoverMessageAddress } from 'viem'
+import { Wallet as WalletIcon, Copy, Check, Plus, PenLine, ShieldCheck, ShieldAlert, RotateCcw } from 'lucide-react'
 import { Section, Heading } from '../components/ui'
 import Blockies from '../components/Blockies'
+import LiveChainStats from '../components/LiveChainStats'
 import { taaqo, CHAIN_META } from '../lib/wagmi'
 
 const TAAQO_PARAMS = {
@@ -164,7 +166,7 @@ function AddTaaqoCard() {
       <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--emerald-live)', marginBottom: 16 }}>ADD TAAQO NETWORK</h4>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
         {[
-          ['Chain ID', '5577'],
+          ['Chain ID', '5566'],
           ['Symbol', 'TAAQO'],
           ['RPC', 'rpc.taaqo.com'],
           ['Explorer', 'taaqoscan.com'],
@@ -207,17 +209,54 @@ function AddTaaqoCard() {
 }
 
 function SignDemo() {
+  const { address } = useAccount()
   const [message, setMessage] = useState('I am verifying ownership of this wallet on Sumit Kotiya — Web3 Portfolio.')
+  const [recovered, setRecovered] = useState(null) // address recovered from the signature
+  const [verifying, setVerifying] = useState(false)
   const { signMessage, data: signature, isPending, reset } = useSignMessage()
+
+  // Once a signature comes back, cryptographically recover the signer and
+  // confirm it matches the connected wallet — real verification, not a label.
+  useEffect(() => {
+    if (!signature) return
+    let cancelled = false
+    setVerifying(true)
+    recoverMessageAddress({ message, signature })
+      .then((addr) => { if (!cancelled) setRecovered(addr) })
+      .catch(() => { if (!cancelled) setRecovered('error') })
+      .finally(() => { if (!cancelled) setVerifying(false) })
+    return () => { cancelled = true }
+  }, [signature, message])
+
+  const clear = () => {
+    reset()
+    setRecovered(null)
+    setVerifying(false)
+  }
+
+  const isMatch =
+    recovered && recovered !== 'error' && address &&
+    recovered.toLowerCase() === address.toLowerCase()
 
   return (
     <Card accent="var(--violet-core)">
-      <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--text-violet)', marginBottom: 16 }}>SIGN MESSAGE DEMO</h4>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--text-violet)' }}>SIGN &amp; VERIFY MESSAGE</h4>
+        {signature && (
+          <button
+            onClick={clear}
+            className="cursor-grow"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 12, cursor: 'none' }}
+          >
+            <RotateCcw size={13} /> Reset
+          </button>
+        )}
+      </div>
       <textarea
         value={message}
         onChange={(e) => {
           setMessage(e.target.value)
-          reset()
+          clear()
         }}
         rows={3}
         className="glass-input"
@@ -225,11 +264,11 @@ function SignDemo() {
       />
       <button
         onClick={() => signMessage({ message })}
-        disabled={isPending || !message}
+        disabled={isPending || verifying || !message}
         className="btn-magenta cursor-grow"
         style={{ width: '100%', justifyContent: 'center' }}
       >
-        <PenLine size={16} /> {isPending ? 'Awaiting signature…' : 'Sign with Wallet'}
+        <PenLine size={16} /> {isPending ? 'Awaiting signature…' : verifying ? 'Verifying…' : 'Sign with Wallet'}
       </button>
       <AnimatePresence>
         {signature && (
@@ -240,9 +279,38 @@ function SignDemo() {
             style={{ overflow: 'hidden' }}
           >
             <div style={{ marginTop: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--emerald-live)', marginBottom: 8, fontWeight: 600 }}>
-                <ShieldCheck size={16} /> Verified ✓
-              </div>
+              {/* Verification verdict */}
+              {!verifying && recovered && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    marginBottom: 12,
+                    fontWeight: 600,
+                    color: isMatch ? 'var(--emerald-live)' : 'var(--magenta-soft)',
+                  }}
+                >
+                  {isMatch ? <ShieldCheck size={16} /> : <ShieldAlert size={16} />}
+                  {isMatch
+                    ? 'Signature verified — recovered signer matches your wallet ✓'
+                    : recovered === 'error'
+                      ? 'Could not recover signer'
+                      : 'Signer mismatch'}
+                </div>
+              )}
+
+              {/* Recovered signer address */}
+              {recovered && recovered !== 'error' && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', letterSpacing: 1, marginBottom: 4 }}>RECOVERED SIGNER</div>
+                  <div style={{ fontFamily: 'JetBrains Mono', fontSize: 12.5, color: isMatch ? 'var(--emerald-soft)' : 'var(--magenta-soft)', wordBreak: 'break-all' }}>
+                    {recovered}
+                  </div>
+                </div>
+              )}
+
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', letterSpacing: 1, marginBottom: 4 }}>SIGNATURE</div>
               <div
                 style={{
                   background: '#08080c',
@@ -367,6 +435,7 @@ export default function Wallet() {
         center
         sub="A fully functional wallet experience — connect, switch chains, add Taaqo L2 and sign messages."
       />
+      {mounted && <LiveChainStats />}
       {!mounted ? null : isConnected ? <Dashboard /> : <PreConnect />}
 
       <style>{`

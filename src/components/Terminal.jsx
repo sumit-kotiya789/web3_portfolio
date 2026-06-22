@@ -8,7 +8,7 @@ const lines = [
   { t: '', cmd: '', c: 'green' },
   { t: '', cmd: 'contract StakeVault is Ownable {', c: 'green' },
   { t: '', cmd: '    uint8  public constant TIERS = 6;', c: 'green' },
-  { t: '', cmd: '    uint16 public constant CHAIN_ID = 5577;', c: 'green' },
+  { t: '', cmd: '    uint16 public constant CHAIN_ID = 5566;', c: 'green' },
   { t: '', cmd: '    mapping(address => uint256) public staked;', c: 'green' },
   { t: '', cmd: '    event Staked(address indexed user, uint256 amt);', c: 'green' },
   { t: '', cmd: '}', c: 'green' },

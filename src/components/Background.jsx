@@ -11,6 +11,10 @@ function ParticleNetwork() {
     const ctx = canvas.getContext('2d')
     let raf
     let w, h
+    // Particle colour follows the active theme (set via the --particle CSS var).
+    const particleRGB = () =>
+      getComputedStyle(document.documentElement).getPropertyValue('--particle').trim() || '45,212,191'
+    let rgb = particleRGB()
     const nodes = []
     const COUNT = window.innerWidth < 768 ? 18 : 38
     const LINK_DIST = 130
@@ -52,7 +56,7 @@ function ParticleNetwork() {
 
         ctx.beginPath()
         ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(45,212,191,0.7)'
+        ctx.fillStyle = `rgba(${rgb},0.7)`
         ctx.fill()
 
         for (let j = i + 1; j < nodes.length; j++) {
@@ -65,7 +69,7 @@ function ParticleNetwork() {
             ctx.beginPath()
             ctx.moveTo(n.x, n.y)
             ctx.lineTo(m.x, m.y)
-            ctx.strokeStyle = `rgba(45,212,191,${0.14 * (1 - dist / LINK_DIST)})`
+            ctx.strokeStyle = `rgba(${rgb},${0.14 * (1 - dist / LINK_DIST)})`
             ctx.lineWidth = 0.6
             ctx.stroke()
           }
@@ -79,10 +83,14 @@ function ParticleNetwork() {
       resizeTimer = setTimeout(resize, 200)
     }
     window.addEventListener('resize', onResize)
+    // Re-read the particle colour when the theme attribute flips.
+    const themeObserver = new MutationObserver(() => { rgb = particleRGB() })
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     return () => {
       cancelAnimationFrame(raf)
       clearTimeout(resizeTimer)
       window.removeEventListener('resize', onResize)
+      themeObserver.disconnect()
     }
   }, [])
 
@@ -111,8 +119,8 @@ export default function Background() {
         style={{
           position: 'absolute',
           inset: 0,
-          background:
-            'linear-gradient(120deg, #08080c 0%, #0b0b11 30%, #0d0d14 55%, #0a0a10 80%, #08080c 100%)',
+          background: 'var(--bg-mesh)',
+          transition: 'background .4s ease',
         }}
       />
       {/* Floating orbs */}
@@ -126,7 +134,7 @@ export default function Background() {
           maxWidth: 620,
           maxHeight: 620,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.38), transparent 65%)',
+          background: 'radial-gradient(circle, var(--orb-1), transparent 65%)',
           filter: 'blur(80px)',
           animation: 'orbDrift1 26s ease-in-out infinite',
           willChange: 'transform',
@@ -142,7 +150,7 @@ export default function Background() {
           maxWidth: 580,
           maxHeight: 580,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.20), transparent 65%)',
+          background: 'radial-gradient(circle, var(--orb-2), transparent 65%)',
           filter: 'blur(90px)',
           animation: 'orbDrift2 30s ease-in-out infinite',
           willChange: 'transform',
@@ -158,7 +166,7 @@ export default function Background() {
           maxWidth: 460,
           maxHeight: 460,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.05), transparent 65%)',
+          background: 'radial-gradient(circle, var(--orb-3), transparent 65%)',
           filter: 'blur(90px)',
           animation: 'orbDrift3 24s ease-in-out infinite',
           willChange: 'transform',
@@ -170,7 +178,8 @@ export default function Background() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(circle at 50% 40%, transparent 40%, rgba(8,8,12,0.7) 100%)',
+          background: 'var(--bg-vignette)',
+          transition: 'background .4s ease',
         }}
       />
     </div>
