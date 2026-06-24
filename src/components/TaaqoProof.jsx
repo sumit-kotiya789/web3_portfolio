@@ -105,7 +105,7 @@ export default function TaaqoProof() {
       </p>
 
       {/* Headline metrics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: 14, marginBottom: 16 }}>
         <Metric icon={Boxes} label="Latest block" live value={latest != null ? `#${latest.toLocaleString()}` : '…'} sub="chain tip" />
         <Metric icon={Hash} label="Chain ID" value="5566" sub="TAAQO · EVM" />
         <Metric icon={Server} label="Nodes online" live value={`${online} / 3`} sub="independent RPCs" />

@@ -1,162 +1,81 @@
 import { Link } from 'react-router-dom'
-import { Github, Linkedin, Mail, FileDown } from 'lucide-react'
+import { Github, Linkedin, Mail, ArrowUpRight } from 'lucide-react'
 import { PROFILE } from '../lib/profile'
 
-const chains = ['Ethereum', 'BSC', 'Polygon', 'Taaqo', 'Tron']
+const nav = [
+  ['About', 'about'], ['Work', 'work'], ['Experience', 'experience'],
+  ['Stack', 'stack'], ['Open Source', 'opensource'], ['Contact', 'contact'],
+]
+
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        position: 'relative',
-        zIndex: 1,
-        background: 'var(--bg-deep)',
-        borderTop: '1px solid transparent',
-        borderImage: 'var(--grad-violet) 1',
-        marginTop: 80,
-        paddingTop: 1,
-      }}
-    >
-      <div style={{ height: 1, background: 'var(--grad-violet)' }} />
+    <footer style={{ position: 'relative', zIndex: 1, marginTop: 40 }}>
+      <div className="divider-grad" />
       <div
         style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '3rem 1.5rem 2rem',
+          maxWidth: 1180, margin: '0 auto',
+          padding: 'clamp(3rem, 6vw, 5rem) clamp(1.15rem, 5vw, 4rem) 2.5rem',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: 32,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
+          gap: 40,
         }}
       >
-        <div>
-          <h3 className="text-grad-premium" style={{ fontSize: 24, fontWeight: 800 }}>
-            Built on the blockchain.
+        <div style={{ maxWidth: 360 }}>
+          <h3 className="text-grad-premium" style={{ fontFamily: 'Sora', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 700, lineHeight: 1.1 }}>
+            Let's build something<br />that lasts on-chain.
           </h3>
-          <p className="text-grad-premium" style={{ fontSize: 24, fontWeight: 800, marginTop: 2 }}>
-            Designed for the future.
-          </p>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 16, maxWidth: 320, lineHeight: 1.6 }}>
-            Sumit Kotiya — Blockchain Developer crafting custom L2 infrastructure, DeFi protocols and
-            cross-chain bridges.
-          </p>
-        </div>
-
-        <div>
-          <h4 style={{ color: 'var(--text-cyan)', fontSize: 13, letterSpacing: 2, marginBottom: 14 }}>
-            NAVIGATE
-          </h4>
-          {['Home:/', 'About:/about', 'Projects:/projects', 'Skills:/skills', 'Wallet:/wallet', 'Lab:/lab', 'Contact:/contact'].map(
-            (l) => {
-              const [label, to] = l.split(':')
-              return (
-                <Link
-                  key={to}
-                  to={to}
-                  style={{
-                    display: 'block',
-                    color: 'var(--text-secondary)',
-                    marginBottom: 9,
-                    fontSize: 14,
-                    transition: 'color .2s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--cyan-soft)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                >
-                  {label}
-                </Link>
-              )
-            }
-          )}
-        </div>
-
-        <div>
-          <h4 style={{ color: 'var(--text-cyan)', fontSize: 13, letterSpacing: 2, marginBottom: 14 }}>
-            CONNECT
-          </h4>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-            <a href={PROFILE.socials.github} target="_blank" rel="noreferrer" className="social-ico social-violet">
-              <Github size={18} />
-            </a>
-            <a href={PROFILE.socials.linkedin} target="_blank" rel="noreferrer" className="social-ico social-cyan">
-              <Linkedin size={18} />
-            </a>
-            <a href={`mailto:${PROFILE.email}`} className="social-ico social-magenta">
-              <Mail size={18} />
-            </a>
-          </div>
-          <a
-            href={PROFILE.resumeUrl}
-            download
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              color: 'var(--cyan-soft)',
-              fontSize: 14,
-              marginBottom: 20,
-            }}
-          >
-            <FileDown size={16} /> Download résumé
+          <a href={`mailto:${PROFILE.email}`} className="footer-mail" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 22, color: 'var(--text-secondary)', fontSize: 15 }}>
+            {PROFILE.email} <ArrowUpRight size={15} />
           </a>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--emerald-live)', fontSize: 13 }}>
-            <span className="live-dot" /> Open to opportunities
+          <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+            <a href={PROFILE.socials.github} target="_blank" rel="noreferrer" className="footer-ico" aria-label="GitHub"><Github size={18} /></a>
+            <a href={PROFILE.socials.linkedin} target="_blank" rel="noreferrer" className="footer-ico" aria-label="LinkedIn"><Linkedin size={18} /></a>
+            <a href={`mailto:${PROFILE.email}`} className="footer-ico" aria-label="Email"><Mail size={18} /></a>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 10 }}>Uttarakhand, India 🇮🇳</p>
+        </div>
+
+        <div>
+          <div style={{ color: 'var(--text-muted)', fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 16 }}>Navigate</div>
+          {nav.map(([label, id]) => (
+            <button key={id} onClick={() => scrollTo(id)} className="footer-link">{label}</button>
+          ))}
+        </div>
+
+        <div>
+          <div style={{ color: 'var(--text-muted)', fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 16 }}>On-chain</div>
+          <Link to="/wallet" className="footer-link">Web3 Wallet</Link>
+          <Link to="/lab" className="footer-link">On-chain Lab</Link>
+          <Link to="/projects" className="footer-link">Verified contracts</Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, color: 'var(--emerald-soft)', fontSize: 13 }}>
+            <span className="live-dot" /> Taaqo L2 · chain 5566
+          </div>
         </div>
       </div>
 
-      {/* chain logos row */}
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 1.5rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 22,
-          opacity: 0.6,
-        }}
-      >
-        {chains.map((c) => (
-          <span
-            key={c}
-            style={{ color: 'var(--text-violet)', fontSize: 13, fontFamily: 'JetBrains Mono', letterSpacing: 1 }}
-          >
-            ◆ {c}
-          </span>
-        ))}
-      </div>
-
-      <div className="divider-grad" style={{ margin: '24px 0 0' }} />
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '1.2rem 1.5rem',
-          textAlign: 'center',
-          color: 'var(--text-muted)',
-          fontSize: 13,
-        }}
-      >
-        © {new Date().getFullYear()} Sumit Kotiya · All rights reserved · Crafted with ⚡ on-chain
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '1.4rem clamp(1.15rem, 5vw, 4rem)', borderTop: '1px solid var(--border-hair)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, color: 'var(--text-muted)', fontSize: 13 }}>
+        <span>© {new Date().getFullYear()} Sumit Kotiya</span>
+        <span>Designed & built from first principles · Uttarakhand, India 🇮🇳</span>
       </div>
 
       <style>{`
-        .social-ico {
-          width: 42px; height: 42px;
+        .footer-ico {
+          width: 44px; height: 44px; border-radius: 13px;
           display: flex; align-items: center; justify-content: center;
-          border-radius: 12px;
-          background: var(--glass-violet);
-          transition: all .3s;
+          background: var(--glass-bg); border: 1px solid var(--border-violet);
+          color: var(--text-primary); transition: transform .3s, border-color .3s, background .3s;
         }
-        .social-violet { color: var(--violet-glow); border: 1px solid var(--border-violet); }
-        .social-violet:hover { box-shadow: 0 0 22px rgba(45,212,191,.5); transform: translateY(-3px); }
-        .social-cyan { color: var(--cyan-core); border: 1px solid var(--border-cyan); }
-        .social-cyan:hover { box-shadow: 0 0 22px rgba(45,212,191,.5); transform: translateY(-3px); }
-        .social-magenta { color: var(--magenta-pop); border: 1px solid rgba(45,212,191,.35); }
-        .social-magenta:hover { box-shadow: 0 0 22px rgba(45,212,191,.5); transform: translateY(-3px); }
+        .footer-ico:hover { transform: translateY(-3px); border-color: var(--border-cyan); background: var(--glass-bg-strong); }
+        .footer-link {
+          display: block; background: none; border: none; text-align: left;
+          color: var(--text-secondary); font-size: 14.5px; padding: 0;
+          margin-bottom: 11px; transition: color .2s;
+        }
+        .footer-link:hover { color: var(--text-primary); }
+        .footer-mail:hover { color: var(--text-primary); }
       `}</style>
     </footer>
   )

@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Send, MapPin, CheckCircle2, FileDown, Loader2, AlertCircle } from 'lucide-react'
 import { Section, Heading, Reveal } from '../components/ui'
+import TiltCard from '../components/TiltCard'
 import { PROFILE } from '../lib/profile'
+
+const Scene3D = lazy(() => import('../components/Scene3D'))
 
 const availableFor = [
   { label: 'DeFi Protocols', color: 'var(--violet-core)' },
@@ -66,7 +69,16 @@ export default function Contact() {
     <Section style={{ paddingTop: 130 }}>
       <Heading eyebrow="Get In Touch" title="LET'S BUILD" gradient="text-grad-ocean" center sub="Have a protocol, an L2, or a bridge in mind? Let's architect it together." />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 28 }}>
+      {/* 3D knot centerpiece */}
+      <Reveal>
+        <div style={{ maxWidth: 420, margin: '-10px auto 44px', pointerEvents: 'none' }}>
+          <Suspense fallback={<div style={{ height: 260 }} />}>
+            <Scene3D variant="knot" height={260} interactive={false} />
+          </Suspense>
+        </div>
+      </Reveal>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 28 }}>
         {/* Form */}
         <Reveal>
           <form onSubmit={submit} className="glass" style={{ padding: 30 }}>
@@ -125,7 +137,7 @@ export default function Contact() {
         {/* Side panel */}
         <Reveal delay={0.15}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-            <div className="glass" style={{ padding: 26 }}>
+            <TiltCard max={6} className="glass" style={{ padding: 26 }}>
               <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--text-cyan)', marginBottom: 16 }}>AVAILABLE FOR</h4>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
                 {availableFor.map((t) => (
@@ -145,9 +157,9 @@ export default function Contact() {
                   </span>
                 ))}
               </div>
-            </div>
+            </TiltCard>
 
-            <div className="glass" style={{ padding: 26 }}>
+            <TiltCard max={6} className="glass" style={{ padding: 26 }}>
               <h4 style={{ fontSize: 13, letterSpacing: 2, color: 'var(--text-cyan)', marginBottom: 16 }}>SOCIALS</h4>
               <div style={{ display: 'flex', gap: 14, marginBottom: 18 }}>
                 {socials.map((s) => (
@@ -166,9 +178,9 @@ export default function Contact() {
               >
                 <FileDown size={18} /> Download Résumé
               </a>
-            </div>
+            </TiltCard>
 
-            <div className="glass" style={{ padding: 26, border: '1px solid rgba(45,212,191,0.35)' }}>
+            <TiltCard max={6} className="glass" style={{ padding: 26, border: '1px solid rgba(45,212,191,0.35)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span className="live-dot" style={{ width: 12, height: 12 }} />
                 <div>
@@ -178,12 +190,12 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
 
-            <div className="glass" style={{ padding: 26, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <TiltCard max={6} className="glass" style={{ padding: 26, display: 'flex', alignItems: 'center', gap: 12 }}>
               <MapPin size={22} style={{ color: 'var(--magenta-pop)' }} />
               <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Uttarakhand, India 🇮🇳</span>
-            </div>
+            </TiltCard>
           </div>
         </Reveal>
       </div>

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
 
 import LoadingScreen from './components/LoadingScreen'
-import CustomCursor from './components/CustomCursor'
+import CursorGlow from './components/CursorGlow'
 import Background from './components/Background'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -15,6 +15,8 @@ import CommandPalette from './components/CommandPalette'
 import Home from './pages/Home'
 import About from './pages/About'
 import Projects from './pages/Projects'
+import ProjectDetail from './pages/ProjectDetail'
+import Bridges from './pages/Bridges'
 import Skills from './pages/Skills'
 import Wallet from './pages/Wallet'
 import Lab from './pages/Lab'
@@ -51,7 +53,7 @@ export default function App() {
 
   return (
     <>
-      <CustomCursor />
+      <CursorGlow />
       <Background />
       <KonamiMatrix />
       <ScrollToTop />
@@ -59,13 +61,13 @@ export default function App() {
         position="bottom-center"
         toastOptions={{
           style: {
-            background: '#121219',
-            color: '#ecedf2',
-            border: '1px solid rgba(45,212,191,0.22)',
+            background: 'var(--bg-elevated)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-cyan)',
             fontFamily: 'Space Grotesk, sans-serif',
             fontSize: 14,
           },
-          success: { iconTheme: { primary: '#2dd4bf', secondary: '#08080c' } },
+          success: { iconTheme: { primary: 'var(--blue)', secondary: 'var(--bg-void)' } },
         }}
       />
 
@@ -81,6 +83,8 @@ export default function App() {
                 <Route path="/" element={<PageWrap><Home /></PageWrap>} />
                 <Route path="/about" element={<PageWrap><About /></PageWrap>} />
                 <Route path="/projects" element={<PageWrap><Projects /></PageWrap>} />
+                <Route path="/projects/:id" element={<PageWrap><ProjectDetail /></PageWrap>} />
+                <Route path="/bridges" element={<PageWrap><Bridges /></PageWrap>} />
                 <Route path="/skills" element={<PageWrap><Skills /></PageWrap>} />
                 <Route path="/wallet" element={<PageWrap><Wallet /></PageWrap>} />
                 <Route path="/lab" element={<PageWrap><Lab /></PageWrap>} />

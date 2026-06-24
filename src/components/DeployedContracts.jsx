@@ -195,7 +195,7 @@ function ContractModal({ c, onClose }) {
               </p>
 
               {/* Two columns: walkthrough + diagram */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 26, alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 26, alignItems: 'start' }}>
                 <div>
                   <h4 style={{ fontSize: 12, letterSpacing: 2, color: 'var(--text-cyan)', marginBottom: 14 }}>WHAT HAPPENS, STEP BY STEP</h4>
                   <ol style={{ margin: 0, paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -236,7 +236,7 @@ function ContractModal({ c, onClose }) {
               )}
 
               {/* Functions + events */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 22, marginTop: 26 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 22, marginTop: 26 }}>
                 <div>
                   <h4 style={{ fontSize: 12, letterSpacing: 2, color: 'var(--text-cyan)', marginBottom: 12 }}>KEY FUNCTIONS</h4>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>

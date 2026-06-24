@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 
-/* Animated number counter that fires when in view */
+const SPRING = { type: 'spring', stiffness: 260, damping: 28 }
+const EASE = [0.16, 1, 0.3, 1]
+
+/* Animated number counter, fires when scrolled into view. Tabular figures. */
 export function Counter({ to, suffix = '', prefix = '', duration = 1.8, className }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -9,74 +12,52 @@ export function Counter({ to, suffix = '', prefix = '', duration = 1.8, classNam
 
   useEffect(() => {
     if (!inView) return
-    const controls = animate(0, to, {
-      duration,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => setVal(v),
-    })
+    const controls = animate(0, to, { duration, ease: EASE, onUpdate: (v) => setVal(v) })
     return () => controls.stop()
   }, [inView, to, duration])
 
   const display = Number.isInteger(to) ? Math.round(val) : val.toFixed(1)
   return (
-    <span ref={ref} className={className}>
-      {prefix}
-      {display}
-      {suffix}
+    <span ref={ref} className={className} style={{ fontVariantNumeric: 'tabular-nums' }}>
+      {prefix}{display}{suffix}
     </span>
   )
 }
 
-/* Section wrapper with consistent padding */
+/* Section wrapper with consistent rhythm. */
 export function Section({ children, id, style }) {
   return (
-    <section
-      id={id}
-      style={{
-        maxWidth: 1280,
-        margin: '0 auto',
-        padding: '5rem 1.5rem',
-        position: 'relative',
-        ...style,
-      }}
-    >
+    <section id={id} className="section-wrap" style={style}>
       {children}
     </section>
   )
 }
 
-/* Eyebrow label + big gradient heading */
-export function Heading({ eyebrow, title, gradient = 'text-grad-premium', center, sub }) {
+/* Eyebrow label + big gradient heading. */
+export function Heading({ eyebrow, title, gradient = 'text-grad-premium', center, sub, style }) {
   return (
-    <div style={{ textAlign: center ? 'center' : 'left', marginBottom: 48 }}>
+    <div
+      className="heading-wrap"
+      style={{ textAlign: center ? 'center' : 'left', maxWidth: center ? 760 : 820, marginInline: center ? 'auto' : undefined, ...style }}
+    >
       {eyebrow && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            color: 'var(--text-cyan)',
-            fontSize: 13,
-            letterSpacing: 3,
-            fontFamily: 'JetBrains Mono',
-            marginBottom: 14,
-            textTransform: 'uppercase',
-          }}
+          className={center ? 'eyebrow center' : 'eyebrow'}
+          style={{ marginBottom: 18, justifyContent: center ? 'center' : 'flex-start' }}
         >
-          <span style={{ width: 24, height: 1, background: 'var(--cyan-core)' }} />
           {eyebrow}
         </motion.div>
       )}
       <motion.h2
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.7, ease: EASE }}
         className={gradient}
-        style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 800, lineHeight: 1.05 }}
+        style={{ fontSize: 'var(--fs-h2)', fontWeight: 700 }}
       >
         {title}
       </motion.h2>
@@ -85,14 +66,15 @@ export function Heading({ eyebrow, title, gradient = 'text-grad-premium', center
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.15 }}
           style={{
             color: 'var(--text-secondary)',
-            marginTop: 16,
-            maxWidth: 560,
+            marginTop: 18,
+            fontSize: 'var(--fs-lead)',
+            lineHeight: 1.6,
+            maxWidth: 620,
             marginLeft: center ? 'auto' : 0,
             marginRight: center ? 'auto' : 0,
-            lineHeight: 1.7,
           }}
         >
           {sub}
@@ -102,17 +84,64 @@ export function Heading({ eyebrow, title, gradient = 'text-grad-premium', center
   )
 }
 
-/* Reusable reveal-on-scroll wrapper with stagger support */
-export function Reveal({ children, delay = 0, y = 24, style }) {
+/* Reveal-on-scroll wrapper with blur + lift. */
+export function Reveal({ children, delay = 0, y = 28, style, className }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+      initial={{ opacity: 0, y, filter: 'blur(6px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
       style={style}
     >
       {children}
     </motion.div>
   )
 }
+
+/* Magnetic — element drifts toward the cursor and springs back.
+   Used on CTAs / icon buttons for a tactile, expensive feel. */
+export function Magnetic({ children, strength = 0.35, className, style, as = 'div' }) {
+  const ref = useRef(null)
+  const Comp = motion[as] || motion.div
+
+  const reduced =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const fine =
+    typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+
+  const onMove = (e) => {
+    if (reduced || !fine || !ref.current) return
+    const r = ref.current.getBoundingClientRect()
+    const mx = e.clientX - (r.left + r.width / 2)
+    const my = e.clientY - (r.top + r.height / 2)
+    ref.current.style.transform = `translate(${mx * strength}px, ${my * strength}px)`
+  }
+  const onLeave = () => {
+    if (ref.current) ref.current.style.transform = 'translate(0px, 0px)'
+  }
+
+  return (
+    <Comp
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className={className}
+      style={{ transition: 'transform .35s var(--ease)', willChange: 'transform', display: 'inline-flex', ...style }}
+    >
+      {children}
+    </Comp>
+  )
+}
+
+/* Animated gradient-border card. Pair with .glass content inside. */
+export function GradientBorder({ children, className, style, radius }) {
+  return (
+    <div className={`gradient-border ${className || ''}`} style={{ borderRadius: radius, ...style }}>
+      {children}
+    </div>
+  )
+}
+
+export { SPRING, EASE }

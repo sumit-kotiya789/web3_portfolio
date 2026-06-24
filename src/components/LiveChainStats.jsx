@@ -62,7 +62,7 @@ export default function LiveChainStats() {
         <span className="live-dot" style={{ width: 8, height: 8 }} />
         Live multi-chain block height · read on demand
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 14 }}>
         {GRID.map((id, i) => (
           <ChainCard key={id} id={id} delay={i * 0.06} />
         ))}

@@ -313,7 +313,7 @@ function SignDemo() {
               <div style={{ fontSize: 11, color: 'var(--text-muted)', letterSpacing: 1, marginBottom: 4 }}>SIGNATURE</div>
               <div
                 style={{
-                  background: '#08080c',
+                  background: 'var(--bg-elevated)',
                   border: '1px solid var(--border-cyan)',
                   borderRadius: 12,
                   padding: 12,
@@ -355,7 +355,7 @@ function Dashboard() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}
+      style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: 18 }}
     >
       {/* Wallet card */}
       <Card accent="var(--violet-core)" style={{ gridColumn: '1 / -1' }}>
