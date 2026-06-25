@@ -163,12 +163,12 @@ export default function HeroSection() {
             <div style={{ width: 40, height: 40, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--glass-cyan)', border: '1px solid var(--border-cyan)' }}>
               <Sparkles size={18} style={{ color: 'var(--blue-soft)' }} />
             </div>
-            <div>
+            {/* <div>
               <div style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 600 }}>Taaqo L2 · chain 5566</div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
                 <span className="live-dot" style={{ width: 6, height: 6 }} /> Live · 3 nodes · EVM
               </div>
-            </div>
+            </div> */}
           </motion.div>
         </motion.div>
       </div>
